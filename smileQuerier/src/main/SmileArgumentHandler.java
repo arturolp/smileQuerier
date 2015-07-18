@@ -109,7 +109,7 @@ public class SmileArgumentHandler {
 		qs.runner(network, data, target, outputFile);
 
 		//Finalize
-		System.out.println("outputFile: "+outputFile);
+		//System.out.println("outputFile: "+outputFile);
 		System.out.println("----\n");
 
 	}

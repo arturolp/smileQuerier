@@ -95,7 +95,7 @@ public class QuerySmile {
 		try {
 			ArffLoader arff = new ArffLoader();
 			File myData = new File(dataFile);
-			System.out.print("with: <"+myData.getName()+">, ");
+			System.out.println("   with: "+myData.getName()+"");
 			arff.setFile(myData.getAbsoluteFile()); 
 			data = arff.getDataSet();
 			int classIndex = data.numAttributes() - 1;
@@ -111,7 +111,7 @@ public class QuerySmile {
 		//try{
 		net = new Network();
 		File myNetwork = new File(network);
-		System.out.print("<"+myNetwork.getName() + ">, ");
+		System.out.println(""+myNetwork.getName() + "");
 		net.readFile(myNetwork.getAbsolutePath());
 		String extension = FileTools.getExtension(myNetwork.getAbsolutePath());
 		if(extension.equals("net")){
@@ -279,8 +279,9 @@ public class QuerySmile {
 			output.write(predictions);
 			output.close();
 
+			System.out.println("   outputFile: "+outputFile+"");
 
-			System.out.println("[done]");
+			System.out.println("   [done]");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -314,9 +315,9 @@ public class QuerySmile {
 		else{
 			targetName = target;
 		}
-		System.out.println("target: "+targetName+ " ");
+		System.out.println("   target: "+targetName+ "");
 		String predictions = computePredictions(targetName);
-		System.out.println(predictions);
+		//System.out.println(predictions);
 
 		//-----------------------
 		//4. Read network
