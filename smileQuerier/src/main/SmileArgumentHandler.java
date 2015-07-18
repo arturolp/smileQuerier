@@ -112,7 +112,7 @@ public class SmileArgumentHandler {
 
 		//Finalize
 		//System.out.println("outputFile: "+outputFile);
-		System.out.println("----\n");
+		System.out.println("----");
 
 	}
 }

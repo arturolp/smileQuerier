@@ -37,17 +37,17 @@ public class QuerySmile {
 
 		// Getting the posterior for each target outcome
 		// Updating the network:
-			net.updateBeliefs();
+		net.updateBeliefs();
 
-			//String[] aSuccessOutcomeIds = net.getOutcomeIds(target);
-			//Tools.print(aSuccessOutcomeIds);
-			double[] aValues = net.getNodeValue(target);
-			for(int i = 0; i < aValues.length; i++){
-				output += aValues[i];
-				if((i+1)<aValues.length){
-					output += ",";
-				}
+		//String[] aSuccessOutcomeIds = net.getOutcomeIds(target);
+		//Tools.print(aSuccessOutcomeIds);
+		double[] aValues = net.getNodeValue(target);
+		for(int i = 0; i < aValues.length; i++){
+			output += aValues[i];
+			if((i+1)<aValues.length){
+				output += ",";
 			}
+		}
 
 		return output;
 	}
@@ -55,7 +55,7 @@ public class QuerySmile {
 	public String computePredictions(String target) {
 		String predictions = "value_in_test_dataset,";
 		int targetIndex = getTargetIndex(target);
-		
+
 		String[] aOutcomeIds = net.getOutcomeIds(target);
 		for(int t = 0; t < aOutcomeIds.length; t++){
 			predictions += "predicted_" + aOutcomeIds[t];
@@ -70,7 +70,7 @@ public class QuerySmile {
 			setEvidence(data.instance(i), target);
 
 			String prediction = computePosterior(data.instance(i), target);
-			
+
 			String real = data.instance(i).stringValue(targetIndex);
 			predictions += real+","+ prediction + "\n";
 		}
@@ -79,14 +79,14 @@ public class QuerySmile {
 
 	private int getTargetIndex(String target) {
 		int targetIndex = 0;
-		
+
 		for(int i = 0; i < data.numAttributes(); i++){
 			if(data.attribute(i).name().equals(target)){
 				targetIndex = i;
 				break;
 			}
 		}
-		
+
 		return targetIndex;
 	}
 
@@ -246,15 +246,17 @@ public class QuerySmile {
 				}
 				else{
 					canonical += "_";
-					index += 2;
+					index++;
 				}
 
+		
 				if(oldName.substring(index,(index+1)).equals("i")){
 					canonical += "inf";
 				}
 				else{
 					canonical += oldName.charAt(index)+"_";
 					index += 2;
+					
 					while(oldName.substring(index,(index+1)).matches("\\d")){
 						canonical += oldName.charAt(index);
 						index++;
