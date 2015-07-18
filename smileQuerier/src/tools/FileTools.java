@@ -6,15 +6,17 @@ package tools;
  */
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Vector;
 
 /**
  *
  * @author Arturo Lopez Pineda
  */
-public class FileManager {
+public class FileTools {
 
-	public static String read(String file) {
+	public String read(String file) {
 
 		StringBuffer contents = new StringBuffer();
 
@@ -43,7 +45,7 @@ public class FileManager {
 		return contents.toString();
 	}
 
-	public static Vector<Vector<Integer>> readCSV(String file, String regex) {
+	public Vector<Vector<Integer>> readCSV(String file, String regex) {
 
 		Vector<Vector<Integer>> contents = new Vector<Vector<Integer>>();
 
@@ -112,8 +114,57 @@ public class FileManager {
 		return contents;
 	}
 
+	public Hashtable<String, String> readHashTable(String file) {
 
-	public static String[] readCSVNames(String file, String regex) {
+		Hashtable<String, String> hashTableFromFile = new Hashtable<String, String>();
+
+		BufferedReader input = null;
+		try {
+			input = new BufferedReader(new FileReader(file));
+			String line = null;
+
+			//try to obtain the number of columns
+			line = input.readLine();
+			while (line != null) {
+				while (line.trim().isEmpty()) {
+					line = input.readLine();
+				}
+				String content[] = line.split(",");
+				if(content.length == 0){
+					content = line.split("\t");
+				}
+				
+				hashTableFromFile.put(content[0].trim(), content[1].trim());
+				
+				line = input.readLine();
+			}
+			return hashTableFromFile;
+
+
+
+
+
+
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (input != null) {
+					input.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+
+		return hashTableFromFile;
+	}
+
+	public String[] readCSVNames(String file, String regex) {
 
 		String[] contents = new String[0];
 
@@ -163,7 +214,7 @@ public class FileManager {
 
 
 
-	public static Vector<Vector<String>> readCSV_2(String file) {
+	public Vector<Vector<String>> readCSV_2(String file) {
 
 		Vector<Vector<String>> contents = new Vector<Vector<String>>();
 
@@ -217,7 +268,51 @@ public class FileManager {
 	}
 
 
-	public static void write(String file, String stream) {
+
+
+	public ArrayList<String[]> readCSV(String file) {
+
+		ArrayList<String[]> contents = new ArrayList<String[]>();
+
+		BufferedReader input = null;
+		try {
+			input = new BufferedReader(new FileReader(file));
+			String line = null;
+
+			//try to get the values
+			line = input.readLine();
+			while (line != null) {
+				//to reduce the within white lines
+				if (line.trim().isEmpty()) {
+					line = input.readLine();
+				} else {
+					String[] row = line.split(","); //will try to get the regex ',' as many times as possible
+
+					contents.add(row);
+					//System.out.println("contents.size= "+contents.size());
+					line = input.readLine();
+				}
+			}
+
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (input != null) {
+					input.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return contents;
+	}
+
+
+	public void write(String file, String stream) {
 		// Stream to write file
 		FileOutputStream fout;
 
@@ -237,7 +332,7 @@ public class FileManager {
 		}
 	}
 
-	public static String setExtension(String fileName, String newVersion, String fileRoute, String ext) {
+	public String setExtension(String fileName, String newVersion, String fileRoute, String ext) {
 		String file = "";
 
 		int index = 0;
@@ -253,8 +348,9 @@ public class FileManager {
 
 
 	}
+	
 
-	public static void appends(String file, String stream) {
+	public void appends(String file, String stream) {
 		// Stream to write file
 		FileOutputStream fout;
 
@@ -275,7 +371,7 @@ public class FileManager {
 	}
 
 
-	public static void append(String fileName, String data) {
+	public void append(String fileName, String data) {
 		try{
 
 			File file =new File(fileName);
@@ -295,7 +391,64 @@ public class FileManager {
 			e.printStackTrace();
 		}
 	}
+	
+	public String stripName(String fileName) {
+		String strip = "";
+		File file = new File(fileName);
 
+		strip = stripExtension(file.getName());
+		return strip;
+	}
+	
+	public static String getExtension(String fileName) {
+		String extension = "";
+		File file = new File(fileName);
+		String name = file.getName();
+		
+		int indexSeparator = name.lastIndexOf(".");
+		extension = name.substring(indexSeparator+1, name.length());
+		return extension;
+	}
+	
+	
+	public String stripExtension (String str) {
+        // Handle null case specially.
+        if (str == null) return null;
+        
+        // Get position of last '.'.
+        int pos = str.lastIndexOf(".");
+        
+        // If there wasn't any '.' just return the string as is.
+        if (pos == -1) return str;
+
+        // Otherwise return the string, up to the dot.
+        return str.substring(0, pos);
+    }
+
+	
+	public String stripPath(String filename){
+		String filePath = "";
+		File file = new File(filename);
+		String absolutePath = file.getAbsolutePath();
+		filePath = absolutePath.
+		    substring(0,absolutePath.lastIndexOf(File.separator));
+		
+		return filePath;
+	}
+
+	public String replaceExtension(String filename, String string) {
+		String path = stripPath(filename);
+		String name = stripName(filename);
+		String newFilename = "";
+		if(path.equals("")){
+			newFilename = name+string;
+		}
+		else{
+			newFilename = path+"/"+name+string;
+		}
+		
+		return newFilename;
+	}
 
 	//end of program
 }

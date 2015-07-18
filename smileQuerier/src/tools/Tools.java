@@ -5,10 +5,14 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import weka.core.Instance;
 import weka.core.Instances;
 
 public class Tools {
+	
+	public static boolean isNumeric(String str)
+	{
+	  return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+	}
 
 	//-- BigInteger solution.
 	public int factorial(int n) {
@@ -216,7 +220,7 @@ public class Tools {
 		}
 	}
 
-	public void print(double[] a) {
+	public static void print(double[] a) {
 		if (a != null) {
 			if (a.length > 0) {
 				for (int i = 0; i < a.length; i++) {
@@ -536,7 +540,7 @@ public class Tools {
 		return newValue;
 	}
 
-	public static Instances toInstances(double[][] arr, Instances inst) {
+	/*public static Instances toInstances(double[][] arr, Instances inst) {
 
 		Instances data = new Instances(inst, 0);
 
@@ -546,7 +550,7 @@ public class Tools {
 		}
 		return data;
 
-	}
+	}*/
 
 	public static double[][] toArray(Instances data) {
 		double[][] d = new double[data.numInstances()][data.instance(0)
