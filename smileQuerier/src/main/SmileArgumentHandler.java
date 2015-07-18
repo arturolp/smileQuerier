@@ -20,11 +20,11 @@ public class SmileArgumentHandler {
 	public static String outputFile = "";
 
 	public static void showInfo(){
-		System.out.println("Expected commands format: -network model.xdsl -data data.arff [-target last] [-output out.csv]");
+		System.out.println("Expected commands format: -network model.xdsl -data data.arff [-target last] -output out.csv");
 		System.out.println("-network file");
 		System.out.println("-data file");
 		System.out.println("-target name. For example: first, last, variable name, or variable index (starting from 0). Default is: last");
-		System.out.println("-output file. Default: same as network file");
+		System.out.println("-output file");
 	}
 
 	/**
@@ -33,8 +33,8 @@ public class SmileArgumentHandler {
 	public static void main(String[] args) {
 
 
-		if((args.length < 4)){
-			System.out.println("Insuficient arguments: "+ args.length + " provided. Required 4.");
+		if((args.length < 6)){
+			System.out.println("Insuficient arguments: "+ args.length + " provided. Required 6.");
 			showInfo();
 			System.exit(1);
 		}
@@ -99,12 +99,14 @@ public class SmileArgumentHandler {
 			target = "last";
 		}
 		if(outputFile.equals("")){
-			outputFile = "out.csv";
+			System.out.println("-output was not provided.");
+			showInfo();
+			System.exit(1);
 		}
 		
 		
 		//Runner
-		System.out.print("Querying: ");
+		System.out.println("Querying...");
 		QuerySmile qs = new QuerySmile();
 		qs.runner(network, data, target, outputFile);
 
